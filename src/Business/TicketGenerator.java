@@ -5,6 +5,9 @@
  */
 package Business;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
 import com.itextpdf.text.Chunk;
 import java.util.ArrayList;
 import com.itextpdf.text.Document;
@@ -15,6 +18,7 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.BarcodeEAN;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfContentByte;
@@ -25,6 +29,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Writer;
+import org.krysalis.barcode4j.ChecksumMode;
+import org.krysalis.barcode4j.impl.code39.Code39Bean;
 
 /**
  *
@@ -74,6 +80,66 @@ public class TicketGenerator {
             //p.add("MALOTE BB");
             cell.addElement(p);
             
+            Paragraph roteiro = new Paragraph("Roteiro: ");
+            roteiro.add(new Chunk("A-" + pouch[8] + "/ B-" + pouch[10], FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
+            roteiro.add(new Chunk(" Malha: "));
+            roteiro.add(new Chunk(pouch[5], FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
+            roteiro.add(new Chunk(" Frequência: "));
+            roteiro.add(new Chunk(pouch[6], FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
+            
+            Paragraph linha = new Paragraph("___________________________________________");
+            linha.setAlignment(Paragraph.ALIGN_CENTER);
+            
+            Paragraph linha2 = new Paragraph("Prefixo: ");
+            linha2.add(new Chunk(pouch[0], FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
+            linha2.add(new Chunk(" Agência: "));
+            linha2.add(new Chunk(pouch[1], FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
+            linha2.add(new Chunk(" Sub: "));
+            linha2.add(new Chunk(pouch[0].substring(0, 4), FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
+            
+            Paragraph linha3 = new Paragraph("__________________________________________");
+            linha3.setAlignment(Paragraph.ALIGN_CENTER);
+            
+            Paragraph linha4 = new Paragraph("Empresa: ");
+            linha4.add(new Chunk(pouch[11], FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
+            linha4.add(new Chunk(" UF: "));
+            linha4.add(new Chunk(pouch[4], FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
+            linha4.add(new Chunk(" Município: "));
+            linha4.add(new Chunk(pouch[2], FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
+            
+            Image qrCode = new QRCodeGenerator().generate("0001" + pouch[0] + "010000000");
+            qrCode.scaleAbsolute(new Rectangle(200,200));
+            
+//            BarcodeEAN codeEAN = new BarcodeEAN();
+//            codeEAN.setCode("0001" + pouch[0] + "010000000");
+//            codeEAN.setCodeType(codeEAN.EAN13);
+//            
+//           
+//            
+//            Image imageEAN = codeEAN.createImageWithBarcode(writer.getDirectContent(), null, null);
+//            imageEAN.scaleAbsolute(new Rectangle(100,200));
+//            imageEAN.setAlignment(Paragraph.ALIGN_CENTER);
+
+            Code39Bean bean = new Code39Bean();
+            bean.setChecksumMode(ChecksumMode.CP_CHECK);
+b           bean.setWideFactor(3);
+            BitmapCanvasProvider canvas = new BitmapCanvasProvider(300, BufferedImage.TYPE_BYTE_GRAY, true, 0);
+g           bean.generateBarcode(provider, msg);
+p           provider.finish();
+B           bufferedImage barcodeImage = provider.getBufferedImage();
+
+            
+            Paragraph cod = new Paragraph("0001" + pouch[0] + "010000000");
+            
+            cell.addElement(roteiro);
+            cell.addElement(linha);
+            cell.addElement(linha2);
+            cell.addElement(linha3);
+            cell.addElement(linha4);
+            cell.addElement(qrCode);
+            cell.addElement(imageEAN);
+            cell.addElement(cod);
+            
            
             
             table.addCell(cell);
@@ -83,7 +149,7 @@ public class TicketGenerator {
             
         }
         catch(Exception e) {
-            
+            e.printStackTrace();
         }
     }
 }
