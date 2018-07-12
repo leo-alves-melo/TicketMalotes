@@ -47,20 +47,20 @@ public class DatabaseServices {
         
         BufferedReader br = null;
         String line = "";
-        String csvDivisor = ",";
+        String csvDivisor = ";";
         try {
             
             int index = 0;
             br = new BufferedReader(new FileReader(name));
             while ((line = br.readLine()) != null) {
                 
-                line +="," + transportatorName;
+                line +=";" + transportatorName;
                 
                 //System.out.println(line.split(csvDivisor));
                 
-                if(index >= 4) {
-                    System.out.println(line);
-                    System.out.println("------------");
+                if(index >= 3) {
+                    //System.out.println(line);
+                    //System.out.println("------------");
                     this.database.add(line.split(csvDivisor));
                 }
                 
