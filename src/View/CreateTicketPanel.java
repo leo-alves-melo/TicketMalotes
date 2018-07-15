@@ -8,7 +8,10 @@ package View;
 import Business.TicketGenerator;
 import Interfaces.FrameInterface;
 import Interfaces.FrameManagerInterface;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -42,6 +45,7 @@ public class CreateTicketPanel extends javax.swing.JPanel implements FrameInterf
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
+        loadingLabel = new javax.swing.JLabel();
 
         jButton1.setText("Cria PDF");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -50,13 +54,20 @@ public class CreateTicketPanel extends javax.swing.JPanel implements FrameInterf
             }
         });
 
+        loadingLabel.setText(" ");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(152, 152, 152)
-                .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(152, 152, 152)
+                        .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(177, 177, 177)
+                        .addComponent(loadingLabel)))
                 .addContainerGap(151, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -64,17 +75,36 @@ public class CreateTicketPanel extends javax.swing.JPanel implements FrameInterf
             .addGroup(layout.createSequentialGroup()
                 .addGap(72, 72, 72)
                 .addComponent(jButton1)
-                .addContainerGap(199, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(loadingLabel)
+                .addContainerGap(177, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        TicketGenerator generator = new TicketGenerator();
+        this.loadingLabel.setText("Gerando Tickets...");
+        
+        String pathString = "files/teste.pdf";
+        
+        JFileChooser openFile = new JFileChooser();
+        int result = openFile.showSaveDialog(this);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            Path path = openFile.getSelectedFile().toPath();
+            pathString = path.toString();
+        }
+        
+        TicketGenerator generator = new TicketGenerator(pathString);
+        
         generator.generatePage(selectedPouchs);
+        this.loadingLabel.setText("Tickets Gerados!");
+        JOptionPane.showMessageDialog(null, "Ticket(s) criado(s) com sucesso! Veja-o(s) em \"" +  pathString + ".pdf\"!");
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel loadingLabel;
     // End of variables declaration//GEN-END:variables
 }

@@ -46,8 +46,10 @@ import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
  */
 public class TicketGenerator {
     
-    public TicketGenerator() {
-        
+    String path;
+    
+    public TicketGenerator(String path) {
+        this.path = path;
     }
     
     public void generatePage(ArrayList<String[]> pouchs) {
@@ -56,7 +58,7 @@ public class TicketGenerator {
         Document doc = new Document();
         
         try {
-            PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream("files/teste.pdf"));
+            PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream(this.path + ".pdf"));
 	
             doc.open();
             
@@ -82,7 +84,7 @@ public class TicketGenerator {
                 
                 p.add(new Chunk("                                                                Prefixo: "));
                 System.out.println(pouch[0]);
-                if(pouch[0].length() > 4) {
+                if(pouch[0].length() > 3) {
                     p.add(new Chunk(pouch[0].substring(0, 3) + " " + pouch[0].substring(3, 7), FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
 
                 }
