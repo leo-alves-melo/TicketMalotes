@@ -21,6 +21,10 @@ public class CreateTicketPanel extends javax.swing.JPanel implements FrameInterf
 
     FrameManagerInterface manager;
     ArrayList<String[]> selectedPouchs;
+
+    CreateTicketPanel() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     @Override
     public void setManager(FrameManagerInterface manager) {

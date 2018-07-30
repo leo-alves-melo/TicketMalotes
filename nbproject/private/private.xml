@@ -4,9 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/Users/leonardoalvesdemelo/Documents/pai/TicketMalotes/src/Business/QRCodeGenerator.java</file>
+            <file>file:/Users/leonardoalvesdemelo/Documents/pai/TicketMalotes/src/Model/TableModel.java</file>
             <file>file:/Users/leonardoalvesdemelo/Documents/pai/TicketMalotes/src/Business/DatabaseServices.java</file>
             <file>file:/Users/leonardoalvesdemelo/Documents/pai/TicketMalotes/src/Business/TicketGenerator.java</file>
             <file>file:/Users/leonardoalvesdemelo/Documents/pai/TicketMalotes/src/View/InitialViewPanel.java</file>
+            <file>file:/Users/leonardoalvesdemelo/Documents/pai/TicketMalotes/src/View/WritePouchPanel.java</file>
             <file>file:/Users/leonardoalvesdemelo/Documents/pai/TicketMalotes/src/View/AddPouchPanel.java</file>
             <file>file:/Users/leonardoalvesdemelo/Documents/pai/TicketMalotes/src/View/PouchListPanel.java</file>
             <file>file:/Users/leonardoalvesdemelo/Documents/pai/TicketMalotes/src/View/CreateTicketPanel.java</file>

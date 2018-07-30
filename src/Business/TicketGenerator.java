@@ -53,7 +53,7 @@ public class TicketGenerator {
     }
     
     public void generatePage(ArrayList<String[]> pouchs) {
-        
+        String espacoesquerda = "         ";
         
         Document doc = new Document();
         
@@ -64,6 +64,13 @@ public class TicketGenerator {
             
             for(int i = 0; i < pouchs.size(); i++) {
                 String pouch[] = pouchs.get(i);
+                
+                String prefixo = new String(pouch[0]);
+                while(prefixo.length() < 7) {
+                    prefixo = "0" + prefixo;
+                }
+                
+                
                 
                 /* Cria a imagem que eh o logo do BB */
                 Image logo = Image.getInstance("files/images/bb_logo.png");
@@ -79,37 +86,37 @@ public class TicketGenerator {
                 cell.setCellEvent(new DottedCell(PdfPCell.BOX));
                 
                 Paragraph p = new Paragraph();
+                p.add(new Chunk(espacoesquerda));
                 p.add( new Chunk(logo, 0, 0, true));
                 p.setAlignment(Paragraph.ALIGN_MIDDLE);
                 
-                p.add(new Chunk("                                                                Prefixo: "));
-                System.out.println(pouch[0]);
-                if(pouch[0].length() > 3) {
-                    p.add(new Chunk(pouch[0].substring(0, 3) + " " + pouch[0].substring(3, 7), FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
+                p.add(new Chunk("                Prefixo: "));
+                System.out.println(prefixo);
+                
+                p.add(new Chunk(prefixo.substring(0, 3) + " " + prefixo.substring(3, 7), FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
 
-                }
-                else {
-                    p.add(new Chunk(pouch[0], FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
-
-                }
+                p.add(new Chunk("             Sub: "));
+                p.add(new Chunk(prefixo.substring(0, 3), FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
+                
+                Paragraph espaco = new Paragraph("\n");
+                cell.addElement(espaco);
                     
                 cell.addElement(p);
                 
                 
-                Paragraph linha2 = new Paragraph("   Agência: ");
+                Paragraph linha2 = new Paragraph(espacoesquerda + "Agência: ");
                 linha2.add(new Chunk(pouch[1], FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
-                linha2.add(new Chunk(" Sub: "));
-                linha2.add(new Chunk(pouch[0].substring(0, 3), FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
+                
 
-                Paragraph roteiro = new Paragraph("   Roteiro: ");
+                Paragraph roteiro = new Paragraph(espacoesquerda + "Roteiro: ");
                 roteiro.add(new Chunk("A-" + pouch[8] + "/ B-" + pouch[10], FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
 //                roteiro.add(new Chunk(" Malha: "));
 //                roteiro.add(new Chunk(pouch[5], FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
-                roteiro.add(new Chunk(" Frequência: "));
+                roteiro.add(new Chunk(espacoesquerda + "Frequência: "));
                 roteiro.add(new Chunk(pouch[6], FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
                 //roteiro.setAlignment(Paragraph.ALIGN_CENTER);
 
-                Paragraph malha = new Paragraph("   Malha: ");
+                Paragraph malha = new Paragraph(espacoesquerda + "Malha: ");
                 malha.add(new Chunk(pouch[5], FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
                 malha.add(new Chunk(" Município: "));
                 malha.add(new Chunk(pouch[2], FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
@@ -131,7 +138,7 @@ public class TicketGenerator {
                 Paragraph linha3 = new Paragraph("__________________________________________");
                 linha3.setAlignment(Paragraph.ALIGN_CENTER);
 
-                Paragraph linha4 = new Paragraph("   Empresa: ");
+                Paragraph linha4 = new Paragraph(espacoesquerda + "Empresa: ");
                 linha4.add(new Chunk(pouch[11] + "\n\n", FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
 //                linha4.add(new Chunk(" UF: "));
 //                linha4.add(new Chunk(pouch[4], FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
@@ -139,18 +146,18 @@ public class TicketGenerator {
 //                linha4.add(new Chunk(pouch[2] + "\n", FontFactory.getFont(FontFactory.TIMES_BOLD, 14)));
                 //linha4.setAlignment(Paragraph.ALIGN_CENTER);
 
-                Image qrCode = new QRCodeGenerator().generate("0001" + pouch[0] + "010000000");
+                Image qrCode = new QRCodeGenerator().generate("0001" + prefixo + "010000000");
                 qrCode.scaleAbsolute(new Rectangle(200,200));
 
                 Barcode128 code128 = new Barcode128();
                 code128.setFont(null);
-                code128.setCode("0001" + pouch[0] + "010000000");
+                code128.setCode("0001" + prefixo + "010000000");
                 code128.setCodeType(Barcode128.CODE128);
                 Image img = code128.createImageWithBarcode(writer.getDirectContent(), null, null);
 
                 img.scaleAbsolute(new Rectangle(200,200));
                 img.setAlignment(Paragraph.ALIGN_CENTER);
-                Paragraph cod = new Paragraph("0001" + pouch[0] + "010000000");
+                Paragraph cod = new Paragraph("0001" + prefixo + "010000000");
                 cod.setAlignment(Paragraph.ALIGN_CENTER);
 
                 Paragraph imgs = new Paragraph();
@@ -161,6 +168,7 @@ public class TicketGenerator {
                 imgs.add(new Chunk(qrCode, 0, 0, true));
                 imgs.setAlignment(Paragraph.ALIGN_CENTER);
 
+                
                 cell.addElement(linha2);
                 cell.addElement(roteiro);
                 cell.addElement(malha);

@@ -68,8 +68,6 @@ public class AddPouchPanel extends javax.swing.JPanel implements FrameInterface 
 
         jLabel3.setText("Escreva o nome da transportadora");
 
-        jTextField1.setText("jTextField1");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
